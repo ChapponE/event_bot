@@ -16,6 +16,21 @@ NB_MINUTES_LIST_EVENTS_SLEEP = MIN_MAX - MIN_MIN + 1  # Interval to sleep after 
 NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
 NB_MINUTES_CHECK_CHANGES_LOOP = 20  # Interval to check for changes in events
 
+# # Constants for test (change day and hour)
+# DAY = 1  # The day on which the weekly reminder is triggered (0 is Monday, 6 is Sunday)
+# HOUR = 16  # The hour (UTC) at which the weekly reminder is triggered
+# MIN_MIN = 0  # The minimum minute within the HOUR for the weekly reminder
+# MIN_MAX = 60  # The maximum minute within the HOUR for the weekly reminder
+# DAYS_INTERVAL = 7  # The number of days into the future for considering events
+# NB_MINUTES_LIST_EVENTS_SLEEP = 0.2  # Interval to sleep after posting events in the channel
+# NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
+# NB_MINUTES_CHECK_CHANGES_LOOP = 20  # Interval to check for changes in events
+
+# Messages
+intro_txt = "Bonjour à tous ! Voici les événements de cette fin de semaine au ZincADit, n'hésitez pas à venir bénévoler ❤️ :\n \n"
+no_event = "Il n'y a pas encore d'événement programmé dans les prochains jours. \n\n Retrouver toutes les informations des évenements sur : https://www.zincadit.beer/"
+conclusion_txt = "Retrouver toutes les informations des évenements sur : https://www.zincadit.beer/"
+
 # Global variables
 last_message_id = None
 time_events_announced = None
@@ -24,10 +39,6 @@ weekly_reminder_is_sleeping = False
 
 # Logger setup
 logger = settings.logging.getLogger("bot")
-
-# Messages
-intro_txt = "Bonjour à tous ! Voici les événements de cette fin de semaine au ZincADit, n'hésitez pas à venir bénévoler ❤️ :\n \n"
-no_event = "Il n'y a pas encore d'événement programmé dans les prochains jours."
 
 def run():
     # Initialize Discord bot
@@ -175,7 +186,7 @@ def run():
     async def list_to_message(event_txt_ordered):
         # Convert event list to formatted message
         if event_txt_ordered != [no_event]:
-            return f"{intro_txt}" + "\n\n".join(event_txt_ordered)
+            return f"{intro_txt}" + "\n\n".join(event_txt_ordered) + '\n\n' + conclusion_txt
         else:
             return no_event
 
@@ -239,7 +250,7 @@ def run():
                 events_id = [event['id'] for event in filtered_events]
                 event_txt_time_id = [[events_txt[i], [events_time[i][0], events_time[i][1]], events_id[i]] for i in range(len(filtered_events))]
 
-                message = await channel.send(f"{intro_txt}" + "\n\n".join(events_txt))
+                message = await channel.send(f"{intro_txt}" + "\n\n".join(events_txt) + '\n\n' + conclusion_txt)
                 last_message_id = message.id
 
                 await asyncio.sleep(60*NB_MINUTES_LIST_EVENTS_SLEEP)
