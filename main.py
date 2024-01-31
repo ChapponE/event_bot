@@ -16,15 +16,15 @@ NB_MINUTES_LIST_EVENTS_SLEEP = MIN_MAX - MIN_MIN + 1  # Interval to sleep after 
 NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
 NB_MINUTES_CHECK_CHANGES_LOOP = 20  # Interval to check for changes in events
 
-# # Constants for test (change day and hour)
-# DAY = 1  # The day on which the weekly reminder is triggered (0 is Monday, 6 is Sunday)
-# HOUR = 16  # The hour (UTC) at which the weekly reminder is triggered
-# MIN_MIN = 0  # The minimum minute within the HOUR for the weekly reminder
-# MIN_MAX = 60  # The maximum minute within the HOUR for the weekly reminder
-# DAYS_INTERVAL = 7  # The number of days into the future for considering events
-# NB_MINUTES_LIST_EVENTS_SLEEP = 0.2  # Interval to sleep after posting events in the channel
-# NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
-# NB_MINUTES_CHECK_CHANGES_LOOP = 20  # Interval to check for changes in events
+# Constants for test (change day and hour)
+DAY = 2  # The day on which the weekly reminder is triggered (0 is Monday, 6 is Sunday)
+HOUR = 2  # The hour (UTC) at which the weekly reminder is triggered
+MIN_MIN = 0  # The minimum minute within the HOUR for the weekly reminder
+MIN_MAX = 60  # The maximum minute within the HOUR for the weekly reminder
+DAYS_INTERVAL = 7  # The number of days into the future for considering events
+NB_MINUTES_LIST_EVENTS_SLEEP = 0.2  # Interval to sleep after posting events in the channel
+NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
+NB_MINUTES_CHECK_CHANGES_LOOP = 0.15  # Interval to check for changes in events
 
 # Messages
 intro_txt = "Bonjour à tous ! Voici les événements de cette fin de semaine au ZincADit, n'hésitez pas à venir bénévoler ❤️ :\n \n"
@@ -65,7 +65,7 @@ def run():
             channel = bot.get_channel(int(settings.CHANNEL_ID))
             last_message = await channel.fetch_message(last_message_id)
             last_message_txt = last_message.content
-            list_futur_message, events = await oncoming_event_list(time_events_announced)
+            list_futur_message, events = await oncoming_event_list()
 
             part_message_futur = "\n\n".join(list_futur_message)
             now = datetime.now(pytz.utc)
@@ -75,7 +75,7 @@ def run():
                 # If part_msg is in last_message or we are close to the DAY, HOUR set, don't do anything
                 pass
             else:
-                event_txt_time_id_updated = await list_events_updated(time_events_announced, events)
+                event_txt_time_id_updated = await list_events_updated(events)
                 all_events_passed = all(datetime.fromisoformat(event[1][1]) <= now for event in event_txt_time_id) if event_txt_time_id != [[no_event, [None, None], None]] else True
 
                 if not (all_events_passed and event_txt_time_id_updated == [[no_event, [None, None], None]] and event_txt_time_id != [[no_event, [None, None], None]]):
@@ -98,7 +98,7 @@ def run():
         if isinstance(error, commands.MissingRequiredArgument):
             logger.error("Handled error globally")
 
-    async def oncoming_event_list(time_events_announced):
+    async def oncoming_event_list():
         # Fetch upcoming events
         discord_events = DiscordEvents(settings.DISCORD_API_SECRET)
         events = await discord_events.list_guild_events(int(settings.GUILD_ID))
@@ -158,7 +158,7 @@ def run():
 
         return ordered_event_texts
 
-    async def list_events_updated(time_events_announced, events):
+    async def list_events_updated(events):
         # Update event list based on changes
         try:
             if events:
@@ -235,9 +235,10 @@ def run():
         weekly_reminder_is_sleeping = True
         events = await discord_events.list_guild_events(int(settings.GUILD_ID))
 
+        current_time = datetime.now(pytz.utc)
+        time_events_announced = current_time + timedelta(days=DAYS_INTERVAL)
+        
         if events:
-            current_time = datetime.now(pytz.utc)
-            time_events_announced = current_time + timedelta(days=DAYS_INTERVAL)
             filtered_events = [event for event in events if datetime.fromisoformat(event['scheduled_start_time']) <= time_events_announced]
             filtered_events.sort(key=lambda x: x['scheduled_start_time'] if x['scheduled_start_time'] else datetime.max)
 
