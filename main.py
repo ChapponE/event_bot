@@ -27,9 +27,9 @@ NB_MINUTES_CHECK_CHANGES_LOOP = 20  # Interval to check for changes in events
 # NB_MINUTES_CHECK_CHANGES_LOOP = 0.15  # Interval to check for changes in events
 
 # Messages
-intro_txt = "Bonjour à tous ! Voici les événements de cette fin de semaine au ZincADit, n'hésitez pas à venir bénévoler ❤️ :\n \n"
-no_event = "Il n'y a pas encore d'événement programmé dans les prochains jours. \n\n Retrouver toutes les informations des évenements sur : https://www.zincadit.beer/"
-conclusion_txt = "Retrouver toutes les informations des évenements sur : https://www.zincadit.beer/"
+intro_txt = "Bonjour à toustes ! Voici les événements de cette fin de semaine au ZincADit, n'hésitez pas à venir bénévoler ❤️ :\n \n"
+no_event = "Il n'y a pas encore d'événement programmé dans les prochains jours. \n\n Retrouvez toutes les informations des évenements sur : https://www.zincadit.beer/"
+conclusion_txt = "Retrouvez toutes les informations des évenements sur : https://www.zincadit.beer/"
 
 # Global variables
 last_message_id = None
