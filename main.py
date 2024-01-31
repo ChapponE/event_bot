@@ -16,15 +16,15 @@ NB_MINUTES_LIST_EVENTS_SLEEP = MIN_MAX - MIN_MIN + 1  # Interval to sleep after 
 NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
 NB_MINUTES_CHECK_CHANGES_LOOP = 20  # Interval to check for changes in events
 
-# Constants for test (change day and hour)
-DAY = 2  # The day on which the weekly reminder is triggered (0 is Monday, 6 is Sunday)
-HOUR = 2  # The hour (UTC) at which the weekly reminder is triggered
-MIN_MIN = 0  # The minimum minute within the HOUR for the weekly reminder
-MIN_MAX = 60  # The maximum minute within the HOUR for the weekly reminder
-DAYS_INTERVAL = 7  # The number of days into the future for considering events
-NB_MINUTES_LIST_EVENTS_SLEEP = 0.2  # Interval to sleep after posting events in the channel
-NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
-NB_MINUTES_CHECK_CHANGES_LOOP = 0.15  # Interval to check for changes in events
+# # Constants for test (change day and hour)
+# DAY = 2  # The day on which the weekly reminder is triggered (0 is Monday, 6 is Sunday)
+# HOUR = 2  # The hour (UTC) at which the weekly reminder is triggered
+# MIN_MIN = 0  # The minimum minute within the HOUR for the weekly reminder
+# MIN_MAX = 60  # The maximum minute within the HOUR for the weekly reminder
+# DAYS_INTERVAL = 7  # The number of days into the future for considering events
+# NB_MINUTES_LIST_EVENTS_SLEEP = 0.2  # Interval to sleep after posting events in the channel
+# NB_MINUTES_WEEKLY_REMINDER_LOOP = MIN_MAX - MIN_MIN - 1  # Interval for the weekly reminder loop
+# NB_MINUTES_CHECK_CHANGES_LOOP = 0.15  # Interval to check for changes in events
 
 # Messages
 intro_txt = "Bonjour à tous ! Voici les événements de cette fin de semaine au ZincADit, n'hésitez pas à venir bénévoler ❤️ :\n \n"
